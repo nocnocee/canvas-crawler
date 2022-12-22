@@ -7,6 +7,8 @@
 // the hero and the ogre should be able to collide to make something happen
 // when the hero collides with the ogre, ogre is removed from the screen, the game stops, and sends a message to the user that they have won.
 
+//////////// INITIAL SETUP /////////////////////
+
 // first we grab our HTML elements for easy reference later
 const game = document.getElementById('canvas')
 const movement = document.getElementById('movement')
@@ -57,11 +59,14 @@ game.height = 360
 //     alive: true,
 //     render: function () {
 //         ctx.fillStyle = this.color
-//         // this built in function creates a rectangel
+//         // this built in function creates a rectangle
+//         // must pass the following args in the following order:
+//         // x coord, y coord, width in px, height in px
 //         ctx.fillRect(this.x, this.y, this.width, this.height)
 //     }
 // }
 
+//////////// CRAWLER CLASS /////////////////////
 // Since these two objects are basically the same, we can create a class to keep our code dry.
 class Crawler {
     constructor(x, y, width, height, color) {
@@ -78,30 +83,27 @@ class Crawler {
     }
 }
 
-////////////////// DOMcontentLoader ///////////////////////
-
-const player = new Crawler(10,10,16,16, 'lightsteelblue')
+const player = new Crawler(10, 10, 16, 16, 'lightsteelblue')
 const ogre = new Crawler(200, 50, 32, 48, '#bada55')
 
 // player.render()
 // ogre.render()
 
-
-
-////////////////// MOVEMENT HANDLER ///////////////////////
-
+//////////// MOVEMENT HANDLER /////////////////////
 // our movement handler function tells our code how and when to move the player around
 // this will be tied to an event listener for key events
 const movementHandler = (e) => {
     // here the e is standing for 'event' -> specifically will be a keydown
-    // we're going to use keyCodes to tell it to do different movements for different keys
+    // we're going to use keyCodes to tell it to do different movements for diff keys
     // here are some basic key codes:
-    // w = 87, a = 65, 2 = 83, d = 68
+    // w = 87, a = 65, s = 83, d = 68
     // up = 38, left = 37, down = 40, right = 39
+    // by linking these keycodes to a function(or codeblock)
+    // we can tell them to change the player x or y values
     console.log('what the heck is e?\n', e.keyCode)
-    // conditional statement if keycode === something do something if keycode === somethingElse do somethingElse
-    // coudl build a giant if...else for this
-    // im going to use switch case instead 
+    // conditional statements if keycode === something do something if keycode === somethingElse do somethingElse
+    // could build a giant if...else for this
+    // im going to use switch case instead
     // switch is my condition, and it opens up for a multitude of cases
     switch (e.keyCode) {
         // move up
@@ -120,7 +122,7 @@ const movementHandler = (e) => {
         case (83):
         case (40):
             player.y += 10
-            break 
+            break
         // move right
         case (68):
         case (39):
@@ -129,17 +131,22 @@ const movementHandler = (e) => {
     }
 }
 
-
-////////////////// GAME LOOP ///////////////////////
-
+//////////// GAME LOOP /////////////////////
 // we're going to set up a gameLoop function
 // this will be attached to an interval
 // this function will run every interval(amount of ms)
-// this is how we will animate our game 
+// this is how we will animate our game
 
 const gameLoop = () => {
-    // no conslole log in here if you can avoid it
+    // no console logs in here if you can avoid it
+    // console.log('the game loop is running')
     // for testing, it's ok to add them, but final should not have any
+    
+    // to resemble movement, we should clear the old canvas every loop
+    // then, instead of drawing a snake because it's maintaining all the old positions of our character
+    // we'll just see our player square moving around
+    ctx.clearRect(0, 0, game.width, game.height)
+
     player.render()
     movement.textContent = `${player.x}, ${player.y}`
 
@@ -148,9 +155,7 @@ const gameLoop = () => {
     }
 }
 
-
-
-////////////////// DOMcontentLoader ///////////////////////
+//////////// CONTENT LOADED EVENT LISTENER /////////////////////
 
 // here we'll add an event listener, when the DOMcontent loads, run the game on an interval
 // eventually this event will have more in it.
