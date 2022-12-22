@@ -106,20 +106,24 @@ const movementHandler = (e) => {
     switch (e.keyCode) {
         // move up
         case (87):
+        case (38):
             // this moves player up 10px every press
             player.y -= 10
             // we need the break keyword so we can move to another case if necessary
             break
         // move left
         case (65):
+        case (37):
             player.x -= 10
             break
         // move down
         case (83):
+        case (40):
             player.y += 10
             break 
         // move right
         case (68):
+        case (39):
             player.x += 10
             break
     }
